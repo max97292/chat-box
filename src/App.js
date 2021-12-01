@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import useInterval from '@use-it/interval';
+import { motion } from 'framer-motion/dist/es/index';
 import './App.css';
 
 const messages = [
@@ -11,16 +13,57 @@ const messages = [
   { text: '20ReactApps.com!' },
 ];
 
-export default function App() {
+function Message({ message }) {
   return (
-    <div className="app">
-      <div className="walkthrough">
+    <motion.div
+      className='message'
+      initial={{ rotate: -5, scale: 0.2 }}
+      animate={{ rotate: 0, scale: 1 }}
+      transition={{ duration: 1 }}
+    >
+      <div className='avatar'>🐸</div>
+      <div className='text'>{message.text}</div>
+      <div className='avatar'>🐙</div>
+    </motion.div>
+  );
+}
+
+function Typing({ even }) {
+  return (
+    <motion.div
+      className={`typing ${even ? 'is-left' : 'is-right'}`}
+      initial={{ rotate: 10, scale: 0 }}
+      animate={{ rotate: 0, scale: 1 }}
+    >
+      <div className='dots'>
+        <div />
+        <div />
+        <div />
+      </div>
+    </motion.div>
+  );
+}
+
+export default function App() {
+  const [messageToShow, setMessageToShow] = useState(0);
+
+  useInterval(() => {
+    setMessageToShow((messageToShow) => messageToShow + 1);
+  }, 2000);
+
+  return (
+    <div className='app'>
+      <div className='walkthrough'>
         {messages.map((message, index) => {
-          return (
-            <div key={index} className="message">
-              {message.text}
-            </div>
-          );
+          const even = index % 2 === 0;
+
+          if (messageToShow + 1 === index) {
+            return <Typing key={index} even={even} />;
+          }
+
+          if (index > messageToShow) return <div key={index} />;
+
+          return <Message key={index} message={message} />;
         })}
       </div>
     </div>
