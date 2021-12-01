@@ -1,25 +1,28 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 
-function App() {
+const messages = [
+  { text: 'How do I get better at React?' },
+  { text: 'Just build something!' },
+  { text: 'OK! What should I build?' },
+  { text: 'Iono. Just Google it?' },
+  { text: 'Oh! This course looks cool!' },
+  { text: 'Send me the link?!' },
+  { text: '20ReactApps.com!' },
+];
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <div className="walkthrough">
+        {messages.map((message, index) => {
+          return (
+            <div key={index} className="message">
+              {message.text}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
-
-export default App;
